@@ -107,9 +107,15 @@ gradle -v
 
 ### Adicionando Plataformas
 
-Acessar o diretório em que o projeto foi criado
+- Acessar o diretório em que o projeto foi criado
+
+`cd cardapio`
+
+- Adicionar as plataformas
 
 `cordova platform add android`
+
+<img src="img/cordova-2.png" width="400" height="200">
 
 - Opções: IOS, windows, browser...
 
