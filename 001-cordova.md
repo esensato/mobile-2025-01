@@ -94,7 +94,7 @@ gradle -v
 
 `cordova -v`
 
-<img src="img/cordova-1.png" width="600" height="300">
+<img src="img/cordova-1.png" width="800" height="300">
 
 ### Criando um Projeto
 
