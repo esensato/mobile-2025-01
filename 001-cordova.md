@@ -10,45 +10,37 @@
 
 ### Instalação Java e Gradle (Windows)
 
+- Executar os comandos abaixo dentro do *Terminal* do *VS Code*
+- Instalar o *Java*
 ```
 mkdir c:\mobile\java
 cd c:\mobile\java 
 curl -LO https://download.java.net/java/ga/jdk11/openjdk-11_windows-x64_bin.zip
 tar -xvf openjdk-11_windows-x64_bin.zip 
 jdk-11\bin\java -version
-```
-```
+
 openjdk version "11" 2018-09-25
 OpenJDK Runtime Environment 18.9 (build 11+28)
 OpenJDK 64-Bit Server VM 18.9 (build 11+28, mixed mode)
 ```
-
-- Reiniciar o *VS Code*
-
+- Instalar o *Gradle*
 ```
 mkdir c:\mobile\gradle
 cd c:\mobile\gradle 
 curl -LO https://services.gradle.org/distributions/gradle-8.12.1-bin.zip
 tar -xvf gradle-8.12.1-bin.zip
-
+```
+- Configurar a variável de ambiente `PATH`
+```
 setx PATH "C:\mobile\java\jdk-11\bin;C:\mobile\gradle\gradle-8.12.1\bin;%PATH%" 
+```
+- Reiniciar o *VS Code*
+- Verificar as instalações
+```
+java -version
 
 gradle -v
-
 ```
-> No installed build tools found. Please install the Android build tools version 34.0.0.
-
-- Efetuar o download do [Java 11 Windows](https://download.java.net/java/ga/jdk11/openjdk-11_windows-x64_bin.zip)
-
-- Descompactar o arquivo zip em alguma pasta:
-![java-1](img/java-1.png)
-- Alterar o `JAVA_HOME` apontando para o diretório acima:
-
-    - `SET JAVA_HOME="C:\Software\jdk-11"`
-
-- Verificar a versão da JVM executando `gradle -v`
-![java-2](img/java-2.png)
-
 ### Instalação Completa Mac
 
 - Abrir um **Terminal**
