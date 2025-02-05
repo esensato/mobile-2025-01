@@ -94,6 +94,8 @@ gradle -v
 
 `cordova -v`
 
+<img src="img/cordova-1.png" width="600" height="300">
+
 ### Criando um Projeto
 
 `cordova create cardapio pizzaria.cardapio CardapioApp`
