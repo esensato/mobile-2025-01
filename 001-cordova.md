@@ -8,18 +8,7 @@
 
 - [Nodejs](https://nodejs.org/en/download/)
 
-- [Gradle](https://gradle.org/releases/)
-
-- Incluir o Gradle no `PATH`
-
-    - Windows: set PATH=%PATH%;Diretório bin do gradle
-
-- Exemplo (Windows)
-![gradle-1](img/gradle-1.png)
-- `set PATH=%PATH%;C:\Software\gradle-7.6.1\bin`
-![gradle-2](img/gradle-2.png)
-
-### Correção Versão do Java - Windows
+### Instalação Java e Gradle (Windows)
 
 ```
 mkdir c:\mobile\java
