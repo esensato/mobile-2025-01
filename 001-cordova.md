@@ -115,7 +115,7 @@ gradle -v
 
 `cordova platform add android`
 
-<img src="img/cordova-2.png" width="400" height="200">
+<img src="img/cordova-2.png" width="450" height="200">
 
 - Opções: IOS, windows, browser...
 
