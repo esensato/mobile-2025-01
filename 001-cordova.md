@@ -8,6 +8,8 @@
 
 - [Nodejs](https://nodejs.org/en/download/)
 
+- [Configurar Disposivito Real Android - USB](https://developer.android.com/codelabs/basic-android-kotlin-compose-connect-device#0)
+
 ### Instalação Java e Gradle (Windows)
 
 - Executar os comandos abaixo dentro do *Terminal* do *VS Code*
