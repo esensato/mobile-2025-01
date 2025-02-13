@@ -92,6 +92,11 @@ div {
     flex: 3;
     border: solid;
     height: 200px;
+    background-image: url("../img/pizza.jpg");
+    background-color: #cccccc;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .seta {
