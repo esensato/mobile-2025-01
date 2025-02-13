@@ -42,7 +42,50 @@
 <body>
     <div class="app">
 
-        <button value="Clique AQUI">Clique Aqui</button>
+        <div class="titulo">Pizzaria Cordova</div>
+
+        <div class="imagem-container">
+            <div class="imagem-lateral">
+                <div class="seta" id="esquerda">&lt;&lt;</div>
+            </div>
+            <div class="imagem" id="imagem"></div>
+            <div class="imagem-lateral">
+                <div class="seta" id="direita">&gt;&gt;</div>
+            </div>
+        </div>
+
+        <div class="form-linha">
+            <div class="form-linha-esq">Local:</div>
+            <div class="form-linha-dir"><input type="text" id="endereco"></div>
+        </div>
+
+        <div class="form-linha">
+            <div class="form-linha-esq">Pizza:</div>
+            <div class="form-linha-dir" id="pizza">Calabresa com Cebola</div>
+        </div>
+
+        <div class="form-linha">
+            <div class="form-linha-esq">Preço:</div>
+            <div class="form-linha-dir" id="preco">R$ 35,00</div>
+        </div>
+
+        <div class="form-linha">
+            <div class="form-linha-esq">Qtde:</div>
+            <div class="form-linha-dir"><select id="qtde">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select></div>
+        </div>
+
+
+        <button id="btnCliqueAqui">Finalizar Pedido</button>
+
+
+    </div>
+
+
+
     </div>
     <script src="cordova.js"></script>
     <script src="js/index.js"></script>

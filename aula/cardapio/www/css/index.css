@@ -28,8 +28,8 @@ body {
     /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;
     /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color: #E4E4E4;
-    background-image: linear-gradient(to bottom, #A7A7A7 0%, #E4E4E4 51%);
+    background-color: #4B946A;
+
     font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 12px;
     height: 100vh;
@@ -41,22 +41,79 @@ body {
     width: 100%;
 }
 
-/* Portrait layout (default) */
+input {
+    font-size: 16px;
+    padding: 5px;
+    width: 100%;
+}
+
+select {
+    font-size: 20px;
+    width: 50px;
+}
+
+button {
+    font-size: 20px;
+    padding: 20px;
+    background-color: aqua;
+    margin-top: 10px;
+}
+
+div {
+    font-size: 16px;
+}
+
 .app {
-    position: absolute;
-    /* position in the center of the screen */
-    left: 50%;
-    top: 50%;
-    height: 50px;
-    /* text area height */
-    width: 225px;
-    /* text area width */
+    display: flex;
+    flex-direction: column;
+    width: 100%
+}
+
+.titulo {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     text-align: center;
-    padding: 180px 0px 0px 0px;
-    /* image height is 200px (bottom 20px are overlapped with text) */
-    margin: -115px 0px 0px -112px;
-    /* offset vertical: half of image height and text area height */
-    /* offset horizontal: half of text area width */
+    width: 100%;
+}
+
+.imagem-container {
+    display: flex;
+    align-items: center;
+}
+
+.imagem-lateral {
+    flex: 1;
+}
+
+.imagem {
+    flex: 3;
+    border: solid;
+    height: 200px;
+}
+
+.seta {
+    font-size: 34px;
+    text-align: center;
+    color: aqua;
+}
+
+.form-linha {
+    display: flex;
+    align-items: center;
+    margin-top: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.form-linha-esq {
+    flex: 1;
+}
+
+.form-linha-dir {
+    flex: 5;
 }
 
 /* Landscape layout (with min-width) */
