@@ -3,6 +3,7 @@
 *.DS_Store
 # Log file
 *.log
+local/
 
 # BlueJ files
 *.ctxt

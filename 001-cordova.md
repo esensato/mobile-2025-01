@@ -90,6 +90,21 @@ gradle -v
 
 - [Vide](https://stackoverflow.com/questions/44013216/android-emulator-screen-size-not-the-same-as-device-frame)
 
+### Executar AVD
+- Dentro do `Terminal` do **VS Code** ou **Command Prompt** (Windows):
+```bash
+cd %LOCALAPPDATA%\Android\Sdk
+cd emulator
+emulator -list-avds
+emulator -avd <nome_do_avd>
+```
+- Verificar se existe um dispositivo físico conectado
+```bash
+cd %LOCALAPPDATA%\Android\Sdk\platform-tools
+adb devices -l
+```
+- O diretório do **Android SDK** no **Mac** é o `~/Library/Android/sdk/`
+
 ### Instalação Cordova
 
 `npm install -g cordova`
@@ -342,7 +357,7 @@ pizza = document.getElementById('pizza');
 
 - Criar uma função para atualizar a interface e chamá-la no `onDeviceReady`
 
-```
+```javascript
 const atualizarInterface = () => {
     pizza.innerHTML = itensCardapio[idItem].pizza;
     preco.innerHTML = itensCardapio[idItem].preco;
@@ -352,7 +367,7 @@ const atualizarInterface = () => {
 
 - Mover para a direita
 
-```
+```javascript
 const direita = () => {
     if (idItem < itensCardapio.length) {
         idItem++;
@@ -363,7 +378,7 @@ const direita = () => {
 
 - Mover para a esquerda
 
-```
+```javascript
 const esquerda = () => {
     if (idItem > 0) {
         idItem--;
@@ -374,7 +389,7 @@ const esquerda = () => {
 
 - Enviar dados
 
-```
+```javascript
 const enviar = () => {
     alert (endereco.value + " - " + itensCardapio[idItem].pizza + " - " + qtde.value); 
 }
@@ -386,14 +401,14 @@ const enviar = () => {
 
 - Alterar em `index.html` a diretiva de segurança `default-src`:
 
-```
+```html
 <meta http-equiv="Content-Security-Policy" 
 content="default-src * data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src * data: content:;">
 ```
 
 - Executando **GET**
 
-```
+```javascript
 const request = () => {
     cordova.plugin.http.get('https://pedidos-pizzaria.glitch.me/ping', {
 }, {}, function(response) {
@@ -407,7 +422,7 @@ const request = () => {
 }
 ```
 - Executando **POST**
-```
+```javascript
 cordova.plugin.http.setDataSerializer('json');
 cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
   pizza: "Atum com Queijo", quantidade: 1, endereco: "Rua das Rosas, 123"
@@ -432,21 +447,135 @@ cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
 
 - Mecanismos de extensão da plataforma - vide [Referência](https://cordova.apache.org/plugins/)
 
-#### Splash Screen
+#### Bateria
 
 - Instalar o *plugin*:
 
-    `cordova plugin add cordova-plugin-splashscreen`
+    `cordova plugin add cordova-plugin-battery-status`
 
-- Configurar a imagem no arquivo `config.xml`
-    ```
-    <platform name="android">
-        <splash src="res/screen/android/pizza.png"/>
-        <preference name = "SplashScreenDelay" value = "3000" />
-    </platform>
-    ```
-- O caminho da imagem deve ser relativo à raiz do projeto (pasta `res` no mesmo nível de `www`, por exemplo)
+- Registrar o evento
+    ```javascript
+    window.addEventListener("batterystatus", onBatteryStatus, false);
 
+    window.addEventListener("batterylow", onBatteryStatus, false);
+
+    window.addEventListener("batterycritical", onBatteryStatus, false);
+    ```
+- Implementar o tratamento do evento
+    ```javascript
+    function onBatteryStatus(status) {
+        alert("Nível: " + status.level);
+    }
+    ```
+#### Informações do Dispositivo
+
+- Instalar o *plugin*:
+
+    `cordova plugin add cordova-plugin-device`
+
+- Permite o acesso a diversas informações sobre o dispositivo
+    - device.cordova
+    - device.model
+    - device.platform
+    - device.uuid
+    - device.version
+    - device.manufacturer
+    - device.isVirtual
+    - device.serial
+    - device.sdkVersion (Android)
+- Obter informações
+    ```javascript
+    function info() {
+        alert("Plataforma: " + device.platform);
+    }
+    ```
+#### Rede
+
+- Instalar o *plugin*:
+
+    `cordova plugin add cordova-plugin-network-information`
+
+- Registrar o evento
+    ```javascript
+    document.addEventListener("offline", redeOff, false);
+
+    document.addEventListener("online", redeOn, false);
+    ```
+- Implementar o tratamento do evento
+    ```javascript
+    function redeOff() {
+        alert("Sem internet: " + navigator.connection.type);
+    }
+    
+    function redeOn() {
+        alert("Com internet: " + navigator.connection.type);
+    }
+    ```
+#### Status Bar
+
+- Instalar o *plugin*:
+
+    `cordova plugin add cordova-plugin-statusbar`
+
+- Exibir / ocultar *status bar*
+    ```javascript
+    StatusBar.show();
+    StatusBar.hide();
+    ```
+#### Caixas de Diálogo
+
+- Instalar o *plugin*:
+
+    `cordova plugin add cordova-plugin-dialogs`
+
+- Exibir a caixa de ciálogo
+    ```javascript
+    function info() {
+    
+        navigator.notification.alert(
+            "Plataforma: " + device.cordova, // mensagem
+            fecharAlerta(), // função acionada quando fechar o diálogo
+            'Informações', // título
+            'OK' // texto do botão
+        );
+    }
+    
+    function fecharAlerta() {
+    
+    }
+    ```
+#### GPS
+
+- Instalar o *plugin*:
+
+    `cordova plugin add cordova-plugin-geolocation`
+
+- Obter as coordenadas atuais
+    ```javascript
+    navigator.geolocation.getCurrentPosition(geoOK, geoError);
+    ```
+- Impelentar as funções de captura e erro (opcional)
+    ```javascript
+    function geoOK(posicao) {
+        alert("lat x long: " + posicao.coords.latitude + " x " + posicao.coords.longitude);
+    }
+    
+    function geoError(err) {
+        alert("Erro" + err);
+    }
+    ```
+- Obter previsão do tempo 
+ 
+`http://api.openweathermap.org/data/2.5/weather?lat='+ latitude + '&lon=' + longitude + '&appid=' + OpenWeatherAppKey + '&units=imperial'`
+#### Persistência com Local Storage
+- Utilizar o *local storage* disponível em qualquer navegador
+    ```javascript
+    var storage = window.localStorage;
+    var value = storage.getItem(key);
+    storage.setItem(key, value);
+    storage.removeItem(key);
+    ```
+    
 #### Câmera
 
 - Criar um novo projeto
@@ -467,7 +596,7 @@ cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
 
 - CSS
 
-    ```
+    ```css
     body {
         -webkit-touch-callout: none;
         -webkit-text-size-adjust: none;
@@ -512,7 +641,7 @@ cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
 
 - Incluir um botão para acionar a câmera e o local para exibir a imagem
 
-    ```
+    ```html
     <div class="app">
         <div class="preview" id="preview"></div>
         <div class="botao"><button class="tirar" id="tirarfoto">Tirar Foto</button></div>
@@ -521,12 +650,12 @@ cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
 
 - Registrar o evento de `click` no botão que vai acionar a câmera
 
-    ```
+    ```javascript
     document.getElementById('tirarfoto').addEventListener('click', tirarFoto);
     ```
 
 - Definir a função para efetuar a captura da imagem e exibir no `preview`
-    ```
+    ```javascript
     const tirarFoto = () => {
         navigator.camera.getPicture(onSuccess, onFail, {  
             quality: 50, 
@@ -542,7 +671,7 @@ cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
         } 
     ```
 - Exemplo para envio a um endpoint via POST:
-    ```
+    ```javascript
     const enviarFoto = () => {
 
     cordova.plugin.http.setDataSerializer('json');
@@ -556,3 +685,69 @@ cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
     }
     ```
 - Conferir as imagens em `https://pedidos-pizzaria.glitch.me/imagem`
+
+#### Splash Screen
+- Incluir as configurações abaixo no `config.xml`
+```xml
+<platform name="android">
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/pizzaria.png" />
+</platform>
+
+<preference name="SplashScreenDelay" value="3000" />
+```
+#### Integração com Bootstrap e JQuery
+
+- Efetuar o [Download do bootstrap](https://getbootstrap.com/docs/4.3/getting-started/download/)
+- Efetuar o [Download do jquery](https://jquery.com/download/)
+- Alterar o `index.html` para incluir os arquivos no *head* e no final antes do `</body>`
+```javascript
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+```
+- Exemplo utilizando *card* e *pagination*
+    ```html
+    <div class="container">
+    
+        <div class="card mt-4" style="width: 100%;">
+            <img src="img/logo.png" class="card-img-top">
+            <div class="card-body text-center">
+                <h5 class="card-title" id="card-title">Pizza Atum</h5>
+                <p class="card-text" id="card-text">Preço: R$ 55,00</p>
+                <a href="#" class="btn btn-primary" id="adicionar">Adicionar Pedido</a>
+            </div>
+        </div>
+    
+        <nav aria-label="Page navigation example" class="mt-4">
+            <ul class="pagination justify-content-center" id="pagination">
+    
+            </ul>
+        </nav>
+    
+    </div>
+    ```
+- Adicionar itens de paginação dinamicamente
+```javascript
+function criaPaginacao() {
+    let $pagination = $("#pagination");
+    $pagination.empty();
+
+    for (let i = 1; i <= 10; i++) {
+        let pageItem = `<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+        console.log(pageItem);
+        $pagination.append(pageItem);
+    }
+}
+```
+- Obter a página selecionada e trocar o conteúdo exibido no cardápio (incluir no `onDeviceReady`)
+```javascript
+$(document).on("click", ".page-link", function (event) {
+    event.preventDefault();
+    currentPage = parseInt($(this).data("page"));
+    $("#card-title").text("Pizza Marguerita");
+    $("#card-text").text("R$ 45,00");
+});
+```

@@ -61,8 +61,7 @@ function atualizarInterface() {
 
 function btnCliqueAquiOnClick() {
 
-    let texto = document.getElementById("texto").value;
-    alert(texto);
-    document.getElementById("mensagem").innerHTML = texto;
+    let endereco = document.getElementById("endereco").value;
+    alert("Enviar para: " + endereco);
 
 }
