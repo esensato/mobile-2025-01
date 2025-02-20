@@ -445,7 +445,7 @@ cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
 
 #### Plugins
 
-- Mecanismos de extensão da plataforma - vide [Referência](https://cordova.apache.org/plugins/)
+- Mecanismos de extensão da plataforma - vide [Referência](https://cordova.apache.org/docs/en/latest/#plugins)
 
 #### Bateria
 
