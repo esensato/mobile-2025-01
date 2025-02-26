@@ -8,4 +8,11 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+
+    <platform name="android">
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/pizzaria.png" />
+    </platform>
+
+    <preference name="SplashScreenDelay" value="3000" />
+
 </widget>
