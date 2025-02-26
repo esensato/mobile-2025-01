@@ -663,7 +663,7 @@ cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
         });  
         
         function onSuccess(imageData) { 
-            preview.style.backgroundImage = "url('data:image/jpeg;base64," + imageData + "')"; 
+            document.getElementById('preview').style.backgroundImage = "url('" + imageData + "')"; 
         }  
         
         function onFail(message) { 
@@ -672,11 +672,11 @@ cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/', {
     ```
 - Exemplo para envio a um endpoint via POST:
     ```javascript
-    const enviarFoto = () => {
+    const enviarFoto = (dadoImagem) => {
 
     cordova.plugin.http.setDataSerializer('json');
     cordova.plugin.http.post('https://pedidos-pizzaria.glitch.me/imagem', {
-    imagem: "data:image/jpeg;base64," + dadoImagem
+    imagem: dadoImagem
     }, {}, function(response) {
     alert(response.status);
     }, function(response) {

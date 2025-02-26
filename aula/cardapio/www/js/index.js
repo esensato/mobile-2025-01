@@ -31,7 +31,7 @@ function onDeviceReady() {
 
     StatusBar.hide();
 
-    alert(device.platform + " - " + device.sdkVersion);
+    info();
 
     document.addEventListener("offline", redeOff, false);
 
@@ -39,7 +39,40 @@ function onDeviceReady() {
 
     testeBackEnd();
 
+    navigator.geolocation.getCurrentPosition(geoOK, geoError);
+    obterEndereco();
 
+}
+
+function obterEndereco() {
+
+    let storage = window.localStorage;
+    // caso o endereco exista no local storage exibe o endereco no campo correspondente
+    if (storage.getItem("endereco")) {
+        endereco.value = storage.getItem("endereco");
+    }
+
+}
+
+function geoOK(posicao) {
+    alert("lat x long: " + posicao.coords.latitude + " x " + posicao.coords.longitude);
+}
+
+function geoError(err) {
+    alert("Erro" + err);
+}
+
+function info() {
+
+    navigator.notification.alert(
+        "Plataforma: " + device.platform + " - " + device.sdkVersion, // mensagem
+        fecharAlerta(), // função acionada quando fechar o diálogo
+        'Informações', // título
+        'OK' // texto do botão
+    );
+}
+
+function fecharAlerta() {
 
 }
 
@@ -124,6 +157,10 @@ function btnCliqueAquiOnClick() {
     let endereco = document.getElementById("endereco").value;
     let pizza = itensCardapio[idItem].pizza;
     let quantidade = qtde.value;
+
+    let storage = window.localStorage;
+    // atualiza o endereco no local storage
+    storage.setItem("endereco", endereco);
 
     // converte a string do corpo da requisição POST para JSON
     cordova.plugin.http.setDataSerializer('json');
