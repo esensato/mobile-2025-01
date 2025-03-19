@@ -16,6 +16,8 @@
     npm run reset-project
     npm run android
     ```
+- A pasta `app-example` e o arquivo `_layout.tsx` podem ser apagados
+- <img src="./img/apagar.png" width="300" height="150">
 - Pasta `assets` pode ser utilizada para armazenar imagens utilizadas pelo app
 - Arquivo `App.js` contém o código fonte
 - Principais blocos: 
@@ -154,7 +156,7 @@
              onChangeText={descricaoGastoHandler}
              placeholder="Descrição do Gasto"/>
   ```
-- Definir o estilo:
+- Definir o estilo (`width: "100%"` para ocupar a largura disponível):
   ```css
   input: {
     height: 40,
@@ -162,8 +164,10 @@
     width: 300,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 5
   },
   ```
+- [Gerador Shadow](https://10015.io/tools/react-native-shadow-generator)
 ***
 #### Exibindo o Texto Digitado
 - Criar o `<Text>`:
