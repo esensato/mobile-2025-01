@@ -1,69 +1,51 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View, KeyboardAvoidingView, FlatList, Image } from "react-native";
+import { StyleSheet, View, KeyboardAvoidingView, Modal, Text, Pressable } from "react-native";
+import InclusaoGasto from "./components/InclusaoGasto";
+import ListaGasto from "./components/ListaGasto";
+import ListaGastoDragDrop from "./components/ListaGastoDragDrop";
 
 export default function Index() {
 
-  let mensagem = "Joao";
-  let x = 10;
-  //let total = 100;
-
-  let [total, setTotal] = useState(100);
-  let [destaque, setDestaque] = useState(estilos.linha);
-
-  const getMensagem = () => "Bom dia";
-  const somar = () => {
-    setTotal(total++);
-    console.log(total);
-  }
-
-  const zerar = () => {
-    setTotal(0);
-  }
-
-  const aplicaDestaque = () => {
-    if (destaque.backgroundColor === "white") {
-      setDestaque(estilos.linhaDestaque);
-    } else {
-      setDestaque(estilos.linha);
-    }
-
-    console.log(destaque);
-  }
-
+  let gastosIniciais = [
+    { descricao: "Gasto 1", valor: 100 },
+    { descricao: "Gasto 2", valor: 200 }
+  ];
 
   // let listaGasto = ["Item 1", "Item 2", "Item 3", "Item 4"];
-  let [listaGasto, addGasto] = useState(["Item 1", "Item 2", "Item 3", "Item 4"]);
-  let [descricaoGasto, setDescricaoGasto] = useState("");
+  let [listaGasto, addGasto] = useState(gastosIniciais);
+  let [totalGasto, setTotalGasto] = useState(0);
+  let [exibirModal, setExibirModal] = useState(false);
+
+  const incluirGasto = (descricaoGasto: string, valorGasto: string) => {
+    let novoGasto = { descricao: descricaoGasto, valor: parseFloat(valorGasto) };
+    addGasto([...listaGasto, novoGasto]);
+    let novoTotal: number = totalGasto;
+    novoTotal += parseFloat(valorGasto);
+    setTotalGasto(novoTotal);
+    if (novoTotal > 1000) {
+      setExibirModal(true);
+    }
+  }
+
+  //       <ListaGasto listaGasto={listaGasto} icone={require('../assets/images/coin.png')} />
 
   return <KeyboardAvoidingView style={estilos.painel}>
 
-    <View style={estilos.cadastro}>
-      <View>
-        <TextInput style={estilos.caixatexto}
-          placeholder="Descrição do Gasto"
-          onChangeText={(conteudo) => setDescricaoGasto(conteudo)}
-          value={descricaoGasto}
-        />
-      </View>
-      <View>
-        <Button title="Incluir Gasto" onPress={() => {
-          addGasto([...listaGasto, descricaoGasto]);
-          setDescricaoGasto("");
-        }} />
-      </View>
-    </View>
+    <InclusaoGasto callback={incluirGasto} total={totalGasto} />
+    <ListaGastoDragDrop listaGasto={listaGasto} callback={(itens: any) => addGasto(itens)} />
 
-    <View style={estilos.lista}>
-      <FlatList data={listaGasto}
-        keyExtractor={idx => idx}
-        renderItem={({ item, index }) => {
-          // caso seja par
-          return <View style={estilos.itemLista}>
-            <Image style={{ padding: 5 }} source={require('../assets/images/coin.png')} />
-            <Text style={{ marginLeft: 10 }} key={index}>{index}-{item}</Text>
-          </View>
-        }} />
-    </View>
+    <Modal visible={exibirModal} transparent={true}>
+      <View style={estilos.centeredView}>
+        <View style={estilos.modalView}>
+          <Text>Modal</Text>
+          <Pressable
+            style={[estilos.button, estilos.buttonClose]}
+            onPress={() => setExibirModal(false)}>
+            <Text>Fechar</Text>
+          </Pressable>
+        </View>
+      </View>
+    </Modal>
 
   </KeyboardAvoidingView >
 
@@ -72,31 +54,22 @@ export default function Index() {
 const estilos = StyleSheet.create({
   painel: {
     margin: 50,
-    flex: 1
-  },
-  cadastro: {
     flex: 1,
-    justifyContent: "space-between"
+    justifyContent: "center"
   },
-  lista: {
-    marginTop: 20,
-    flex: 6
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    borderColor: 'red'
   },
-  caixatexto: {
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 5
-  },
-  corpo: {
-    flex: 5,
-    borderWidth: 2
-  },
-  itemLista: {
-    flexDirection: "row",
-    padding: 10,
-    backgroundColor: "yellow",
-    marginBottom: 10,
-    borderRadius: 5,
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -106,17 +79,13 @@ const estilos = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  linha: {
-    flex: 1,
-    borderWidth: 2,
-    fontSize: 20,
-    backgroundColor: "white"
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
   },
-  linhaDestaque: {
-    flex: 1,
-    borderWidth: 2,
-    fontSize: 20,
-    backgroundColor: "red"
+  buttonClose: {
+    backgroundColor: '#2196F3'
   }
 
 });
