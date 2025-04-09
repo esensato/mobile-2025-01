@@ -271,7 +271,7 @@
 ```
 ***
 
-- Para evitar que o teclado influencie no layout basta utilizar o componente `<KeyboardAvoidingView>`
+- Para evitar que o teclado influencie no layout basta utilizar o componente `<KeyboardAvoidingView behavior="height">`
 #### Ajustando o Layout Atual
 - Efetuar a refatoração dos elementos adicionando os estilos e aplicando o **flex**
     ```javascript
@@ -456,7 +456,7 @@
     }
     ```
 - Implementar o componente `DragList`
-    ```html
+    ```javascript
     <DragList
       data={gastos}
       keyExtractor={(item) => item.id}
@@ -591,39 +591,31 @@
 ***
 ### Navegação com React Navigation
 - [React Navigation](https://reactnavigation.org/docs/getting-started/) é um componente que implementa vários tipos de navegação para aplicações **React Native**
-- Instalação dos módulos necessários
-
-  `npm install --save @react-navigation/native`
-  
-  `npm install --save react-native-screens react-native-safe-area-context`
-- Para implementar a navegação é necessário envolver os componentes em um `NavigationContainer`
-
-  `import { NavigationContainer } from '@react-navigation/native';`
-  ```javascript
-  export default function App() {
-
-    return (<NavigationContainer independent={true}>
-      <TelaPrincipal />
-    </NavigationContainer>)
-
-  }
-  ```
 - Um dos tipos de navegação mais comum é o [Stack Navigator](https://reactnavigation.org/docs/native-stack-navigator)
-
-  `npm install --save @react-navigation/native-stack`
-- Criar o `NativeStackNavigator`
-
-  `import { createNativeStackNavigator } from '@react-navigation/native-stack';`
-  ```javascript
-  const Stack = createNativeStackNavigator();
+- Instalação dos módulos necessários
+  ```powershell
+  npm install --save @react-navigation/native
+  npm install --save react-native-screens react-native-safe-area-context
+  npm install --save @react-navigation/native-stack
   ```
-- Informar as telas que serão controladas pelo `Stack Navigator`
+- Mover o conteúdo do arquivo `index.tsx` para um novo dentro de `components`, por exemplo, com o nome `TelaPrincipal.tsx`
+- Para implementar a navegação é necessário envolver os componentes em um `NavigationContainer` dentro do arquivo `index.tsx`
   ```javascript
-  return (<NavigationContainer independent={true}>
-    <Stack.Navigator>
-      <Stack.Screen name="principal" component={TelaPrincipal}/>
-    </Stack.Navigator>
-  </NavigationContainer>)
+  import { NavigationIndependentTree } from '@react-navigation/native';
+  import { createNativeStackNavigator } from '@react-navigation/native-stack';
+  import TelaPrincipal from './components/TelaPrincipal';
+  
+  const Stack = createNativeStackNavigator();
+  
+  export default function Index() {
+  
+    return <NavigationIndependentTree>
+      <Stack.Navigator>
+        <Stack.Screen name="Principal" component={TelaPrincipal} />
+      </Stack.Navigator>
+    </NavigationIndependentTree>
+  
+  }
   ```
 - Criar uma segunda tela `TelaDetalhes` que deve ser exibida ao clicar em um gasto na lista e incluí-la no `Stack` com o nome `detalhes`
 - A `TelaPrincipal` agora receberá como parâmetro `props` um objeto `navigator` (`TelaPrincipal({ navigator })`)
@@ -695,6 +687,82 @@
   console.log(ret.data);
   ```
 ***
+### Mapas
+- API Google Maps é a mais popular, porém é paga
+- Uma alternativa para o Google Maps é o [OpenStreetMap - OSM](https://www.openstreetmap.org/#map=4/-15.13/-53.19)
+- Para realizar a instalação no projeto: `npx expo install react-native-maps`
+- [Documentação do React Native Maps](https://github.com/react-native-maps/react-native-maps)
+- Exemplo inicial
+```javascript
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import MapView, { UrlTile } from 'react-native-maps';
+
+export default function MapComponent(props: any) {
+    return (
+        <View style={styles.container}>
+            <MapView
+                style={styles.map}
+                initialRegion={{
+                    latitude: -23.58701982416051,
+                    longitude: -46.64434391669733,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421, 
+                }}>
+
+                {/* Usando tiles do OpenStreetMap */}
+                <UrlTile urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" maximumZ={19} />
+
+            </MapView>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        height: '100%',
+        width: '100%',
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+    },
+});
+```
+- Adicionando um marcador (deve ser criado dentro da `MapView`)
+    ```javascript
+    <Marker
+        key="ESPMJT"
+        coordinate={{ latitude: -23.586931331827458, longitude: -46.64433318786136 }}
+        title="ESPM"
+        description="ESPM Tech"
+    />
+    ```
+- Adicionando mais de um marcador
+  ```javascript
+  const marcadores: any = [
+      { key: "m2", coord: { latitude: -23.6, longitude: -46.64433318786136 }, title: "M2", description: "Marcador 2" },
+      { key: "m1", coord: { latitude: -23.586931331827458, longitude: -46.64433318786136 }, title: "M1", description: "Marcador 1" },
+  ];
+  
+  {marcadores.map((item: any, idx: number) => (
+      <Marker
+          key={idx}
+          coordinate={item.coord}
+          title={item.title}
+          image={require('../assets/coin.png')}
+          description={item.description} />
+  ))}
+  ```
+- Entre as *tags* `<Marker><Callout></<Callout></Marker>` podem ser inseridos componentes
+- Exemplo de *drag and drop*
+  ```javascript
+  <Marker draggable
+    coordinate={this.state.x}
+    onDragEnd={(e) => this.setState({ x: e.nativeEvent.coordinate })} />
+  ```
+- Eventos `onPress={(aqui: MapPressEvent) => console.log(aqui.nativeEvent.coordinate)}`
+***
 ### Notifications
 - Permitem enviar mensagens de notificação dentro dos padrões de cada platadorma móvel
 - Com o uso das [Notificações do Expo](https://docs.expo.dev/versions/latest/sdk/notifications/) é possível trabalhar com notificações tanto para iOS quanto Android
@@ -728,7 +796,6 @@
     },
   });
   ```
-
 - Respondendo a uma notificação (criar fora do escopo da função que declara o componente!!!)
   ```javascript
   Notifications.setNotificationHandler({
@@ -884,81 +951,3 @@
         );
     }
     ```
-***
-### Mapas
-- API Google Maps é a mais popular, porém é paga
-- Uma alternativa para o Google Maps é o [OpenStreetMap - OSM](https://www.openstreetmap.org/#map=4/-15.13/-53.19)
-- Para realizar a instalação no projeto: `npx expo install react-native-maps`
-- [Documentação do React Native Maps](https://github.com/react-native-maps/react-native-maps)
-- Exemplo inicial
-```javascript
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import MapView, { UrlTile } from 'react-native-maps';
-
-export default function MapComponent(props: any) {
-    return (
-        <View style={styles.container}>
-            <MapView
-                style={styles.map}
-                initialRegion={{
-                    latitude: -23.58701982416051,
-                    longitude: -46.64434391669733,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421, 
-                }}>
-
-                {/* Usando tiles do OpenStreetMap */}
-                <UrlTile urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" maximumZ={19} />
-
-            </MapView>
-        </View>
-    );
-};
-
-const styles = StyleSheet.create({
-    container: {
-        ...StyleSheet.absoluteFillObject,
-        height: '100%',
-        width: '100%',
-    },
-    map: {
-        ...StyleSheet.absoluteFillObject,
-    },
-});
-```
-- Adicionando um marcador (deve ser criado dentro da `MapView`)
-    ```javascript
-    <Marker
-        key="ESPMJT"
-        coordinate={{ latitude: -23.586931331827458, longitude: -46.64433318786136 }}
-        title="ESPM"
-        description="ESPM Tech"
-    />
-    ```
-- Adicionando mais de um marcador
-  ```javascript
-  const marcadores: any = [
-      { key: "m2", coord: { latitude: -23.6, longitude: -46.64433318786136 }, title: "M2", description: "Marcador 2" },
-      { key: "m1", coord: { latitude: -23.586931331827458, longitude: -46.64433318786136 }, title: "M1", description: "Marcador 1" },
-  ];
-  
-  {marcadores.map((item: any, idx: number) => (
-      <Marker
-          key={idx}
-          coordinate={item.coord}
-          title={item.title}
-          image={require('../assets/coin.png')}
-          description={item.description} />
-  ))}
-  ```
-- Entre as *tags* `<Marker><Callout></<Callout></Marker>` podem ser inseridos componentes
-- Exemplo de *drag and drop*
-  ```javascript
-  <Marker draggable
-    coordinate={this.state.x}
-    onDragEnd={(e) => this.setState({ x: e.nativeEvent.coordinate })} />
-  ```
-- Eventos `onPress={(aqui: MapPressEvent) => console.log(aqui.nativeEvent.coordinate)}`
-
-
