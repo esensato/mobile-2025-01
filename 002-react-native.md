@@ -423,7 +423,6 @@
   }
   ```
 ***
-***
 #### FlatList com Drag and Drop
 - Instalar o pacote `npm install --save react-native-draglist` - [react-native-draglist](https://github.com/fivecar/react-native-draglist)
 - Importar o componente `import DragList, { DragListRenderItemInfo } from 'react-native-draglist';`
@@ -464,7 +463,6 @@
       renderItem={renderItem}
     />
     ```
- 
 ***
 ### Organizando os Componentes
 - Criar uma pasta `components` dentro do projeto
