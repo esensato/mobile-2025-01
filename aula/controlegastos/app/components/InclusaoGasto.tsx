@@ -28,8 +28,10 @@ const InclusaoGasto = (props: any) => {
                     onChangeText={(conteudo) => setValorGasto(conteudo)}
                     value={valorGasto}
                 />
-                <View style={{ height: 40 }}>
+                <View style={{ height: 40, flexDirection: "row" }}>
                     <Button title="Incluir Gasto" onPress={enviarGasto} />
+                    <Text></Text>
+                    <Button title="Sync" onPress={() => props.syncCallback()} />
                 </View>
             </View>
             <Text>Total Gastos: R$ {props.total}</Text>

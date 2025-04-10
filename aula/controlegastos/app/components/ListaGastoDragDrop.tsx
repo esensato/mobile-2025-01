@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import DragList, { DragListRenderItemInfo } from 'react-native-draglist';
+import DragList from 'react-native-draglist';
 
 const ListaGastoDragDrop = (props: any) => {
 
@@ -11,7 +11,8 @@ const ListaGastoDragDrop = (props: any) => {
                 style={{ padding: 10, marginBottom: 5, backgroundColor: "#CACA" }}
                 key={item.descricao}
                 onPressIn={onDragStart}
-                onPressOut={onDragEnd}>
+                onPressOut={onDragEnd}
+                onLongPress={() => props.detalheCallback(item)}>
                 <View style={{ flexDirection: "row" }}>
                     <Text style={{ flex: 8 }}>{item.descricao}</Text>
                     <Text style={{ flex: 2 }}>R$ {item.valor}</Text>
