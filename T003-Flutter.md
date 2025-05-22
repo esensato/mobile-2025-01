@@ -1,4 +1,5 @@
 ## Par ou Ímpar
+- Utilizar como referência o [Projeto do repo](https://github.com/esensato/mobile-2025-01/tree/main/aula/par_impar)
 - Criar um simples jogo de par ou ímpar com os seguintes casos de uso:
     - O jogador deve informar seu nome, o valor da aposta, um número (entre 1 e 5) e se deseja par ou ímpar;
     - Uma lista dos jogadores que já apostaram deve ser exibida
